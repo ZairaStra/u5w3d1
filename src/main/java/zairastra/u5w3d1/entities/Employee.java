@@ -29,12 +29,15 @@ public class Employee {
 
     private String avatar;
 
+    private String password;
 
-    public Employee(String username, String name, String surname, String email, String avatar) {
+
+    public Employee(String username, String name, String surname, String email, String avatar, String password) {
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.avatar = "https://ui-avatars.com/api/?name=" + name + "+" + surname;
+        this.password = password;
     }
 }

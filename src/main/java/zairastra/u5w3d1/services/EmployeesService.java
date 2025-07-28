@@ -29,7 +29,7 @@ public class EmployeesService {
             throw new BadRequestException("An employee with username " + payload.username() + " already exists in our system");
         });
 
-        Employee newEmployee = new Employee(payload.username(), payload.name(), payload.surname(), payload.email(), "https://ui-avatars.com/api/?name=" + payload.name() + "+" + payload.surname());
+        Employee newEmployee = new Employee(payload.username(), payload.name(), payload.surname(), payload.email(), "https://ui-avatars.com/api/?name=" + payload.name() + "+" + payload.surname(), payload.password());
         Employee savedEmployee = employeesRepository.save(newEmployee);
         log.info("The employee " + payload.name() + " " + payload.surname() + " has been saved");
 

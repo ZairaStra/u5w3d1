@@ -26,6 +26,14 @@ public class ExceptionsHandler {
         return new ErrorsWithListDTO(exception.getMessage(), LocalDateTime.now(), exception.getErrorMessages());
     }
 
+    //aggiungo l'errore
+    //UNAUTHORIZED - 401
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorDTO handleUnauthorized(UnauthorizedException exception) {
+        return new ErrorDTO(exception.getMessage(), LocalDateTime.now());
+    }
+
     //NOTFOUNDEXCEPTION// - 404
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
