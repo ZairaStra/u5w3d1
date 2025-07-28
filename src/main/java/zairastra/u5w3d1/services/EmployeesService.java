@@ -81,6 +81,11 @@ public class EmployeesService {
         employeesRepository.delete(found);
     }
 
+    //FINDBYEMAIL - serve per il login
+    public Employee findByEmail(String email) {
+        return this.employeesRepository.findByEmailIgnoreCase(email).orElseThrow(() -> new NotFoundException("Employee with email " + email + " not found"));
+    }
+
     //IMGUPLOAD
 
 }

@@ -1,0 +1,25 @@
+package zairastra.u5w3d1.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import zairastra.u5w3d1.entities.Employee;
+import zairastra.u5w3d1.exceptions.UnauthorizedException;
+import zairastra.u5w3d1.payloads.NewLoginDTO;
+import zairastra.u5w3d1.tools.JWTTools;
+
+public class AuthorizationsService {
+    @Autowired
+    private EmployeesService employeesService;
+
+    @Autowired
+    private JWTTools jwtTools;
+
+    public String checkEmailBeforeLogin(NewLoginDTO payload) {
+        Employee found = employeesService.findByEmail(payload.email()); //ottengo l'impiegato dalla sua mail
+        if (found.getPassword().equals(payload.password())) { // verifico la psw - che sia uguale a quella del payolad
+            String extractedToken = jwtTools.createToken(found); //raggiungo il token
+            return extractedToken;
+        } else {
+            throw new UnauthorizedException("Unauthorized - try again");
+        }
+    }
+}
