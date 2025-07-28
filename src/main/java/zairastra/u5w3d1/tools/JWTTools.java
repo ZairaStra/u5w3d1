@@ -15,7 +15,7 @@ import java.util.Date;
 @Component
 public class JWTTools {
     //uso il valore del "sefreto" memorizzaro in env.prop
-    @Value("${jwt.secrer}")
+    @Value("${jwt.secret}")
     private String secret;
 
     //creo token per impiegato

@@ -1,10 +1,13 @@
 package zairastra.u5w3d1.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import zairastra.u5w3d1.entities.Employee;
 import zairastra.u5w3d1.exceptions.UnauthorizedException;
 import zairastra.u5w3d1.payloads.NewLoginDTO;
 import zairastra.u5w3d1.tools.JWTTools;
+
+@Service
 
 public class AuthorizationsService {
     @Autowired
