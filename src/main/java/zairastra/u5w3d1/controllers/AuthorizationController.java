@@ -1,14 +1,10 @@
 package zairastra.u5w3d1.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import zairastra.u5w3d1.entities.Employee;
-import zairastra.u5w3d1.exceptions.ValidationException;
-import zairastra.u5w3d1.payloads.NewEmployeeDTO;
-import zairastra.u5w3d1.payloads.NewEmployeeResponseDTO;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import zairastra.u5w3d1.payloads.NewLoginDTO;
 import zairastra.u5w3d1.payloads.NewLoginResponseDTO;
 import zairastra.u5w3d1.services.AuthorizationsService;
@@ -32,17 +28,20 @@ public class AuthorizationController {
         return new NewLoginResponseDTO(extractedToken);
     }
 
-    //PASSWORD
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public NewEmployeeResponseDTO save(@RequestBody @Validated NewEmployeeDTO payload, BindingResult validationResult) {
-        if (validationResult.hasErrors()) {
-            throw new ValidationException(validationResult.getFieldErrors().stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
-        } else {
-            Employee newEmployee = employeesService.saveEmployee(payload);
-            return new NewEmployeeResponseDTO(newEmployee.getId());
-        }
-    }
+    //in questo caso non ha senso avere un enpoint di registrazione pubblico perchè è un didtema aziendale
+    //non si possono registrare utenti a caso, vengono creati da un amministratore
+    //meglio lasciarlo filtrato
+//    //PASSWORD
+//    @PostMapping("/register")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public NewEmployeeResponseDTO save(@RequestBody @Validated NewEmployeeDTO payload, BindingResult validationResult) {
+//        if (validationResult.hasErrors()) {
+//            throw new ValidationException(validationResult.getFieldErrors().stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
+//        } else {
+//            Employee newEmployee = employeesService.saveEmployee(payload);
+//            return new NewEmployeeResponseDTO(newEmployee.getId());
+//        }
+//    }
 
 
 }
