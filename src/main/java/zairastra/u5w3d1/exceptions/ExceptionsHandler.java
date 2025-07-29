@@ -1,6 +1,7 @@
 package zairastra.u5w3d1.exceptions;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -39,6 +40,12 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDTO handleNotFound(NotFoundException exception) {
         return new ErrorDTO(exception.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN) // 403
+    public ErrorDTO handleForbidden(AuthorizationDeniedException ex) {
+        return new ErrorDTO("Authorization denied", LocalDateTime.now());
     }
 
     //ECCEZIONI NON GESTITE SINGOLARMENTE - 500

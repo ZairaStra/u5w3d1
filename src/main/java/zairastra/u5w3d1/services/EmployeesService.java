@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import zairastra.u5w3d1.entities.Employee;
 import zairastra.u5w3d1.entities.enums.Role;
@@ -18,6 +19,9 @@ import zairastra.u5w3d1.repositories.EmployeesRepository;
 public class EmployeesService {
     @Autowired
     private EmployeesRepository employeesRepository;
+
+    @Autowired
+    private PasswordEncoder bCrypt;
 //PRIMA SETTO IL CRUD
 
     //SAVE
@@ -30,7 +34,7 @@ public class EmployeesService {
             throw new BadRequestException("An employee with username " + payload.username() + " already exists in our system");
         });
 
-        Employee newEmployee = new Employee(payload.username(), payload.name(), payload.surname(), payload.email(), "https://ui-avatars.com/api/?name=" + payload.name() + "+" + payload.surname(), payload.password());
+        Employee newEmployee = new Employee(payload.username(), payload.name(), payload.surname(), payload.email(), "https://ui-avatars.com/api/?name=" + payload.name() + "+" + payload.surname(), bCrypt.encode(payload.password()));
 
         newEmployee.setRole(Role.USER);
 

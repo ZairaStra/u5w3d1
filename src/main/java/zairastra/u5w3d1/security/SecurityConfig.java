@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 //classe di configurazione per SpringSecurity - creo il filtro a mano in modo da scegliere io cosa far passare e cosa no
@@ -24,8 +26,13 @@ public class SecurityConfig {
         httpSecurity.sessionManagement((sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS)));
         //per personalizzare gli errori e permettere di passare senza essere bloccati gli endopoint che seguono authorized
         httpSecurity.authorizeHttpRequests((hauthorized -> hauthorized.requestMatchers("/**").permitAll()));
-        
+
         return httpSecurity.build();
+    }
+
+    @Bean
+    public PasswordEncoder getBCrypt() {
+        return new BCryptPasswordEncoder(12);
     }
 
 }

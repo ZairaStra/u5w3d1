@@ -1,5 +1,6 @@
 package zairastra.u5w3d1.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,6 +19,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+//aggiungo JsonIgnore per evitare di avere dei dati in restituzione dal payoload
+@JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked"})
 public class Employee implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

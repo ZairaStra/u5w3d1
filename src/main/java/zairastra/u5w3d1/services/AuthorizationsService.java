@@ -1,6 +1,7 @@
 package zairastra.u5w3d1.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import zairastra.u5w3d1.entities.Employee;
 import zairastra.u5w3d1.exceptions.UnauthorizedException;
@@ -16,9 +17,12 @@ public class AuthorizationsService {
     @Autowired
     private JWTTools jwtTools;
 
+    @Autowired
+    private PasswordEncoder bCrypt;
+
     public String checkEmailBeforeLogin(NewLoginDTO payload) {
         Employee found = employeesService.findByEmail(payload.email()); //ottengo l'impiegato dalla sua mail
-        if (found.getPassword().equals(payload.password())) { // verifico la psw - che sia uguale a quella del payolad
+        if (bCrypt.matches(found.getPassword(), payload.password())) { // verifico la psw - che sia uguale a quella del payolad
             String extractedToken = jwtTools.createToken(found); //raggiungo il token
             return extractedToken;
         } else {
