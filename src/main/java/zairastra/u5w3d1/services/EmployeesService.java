@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import zairastra.u5w3d1.entities.Employee;
+import zairastra.u5w3d1.entities.enums.Role;
 import zairastra.u5w3d1.exceptions.BadRequestException;
 import zairastra.u5w3d1.exceptions.NotFoundException;
 import zairastra.u5w3d1.payloads.NewEmployeeDTO;
@@ -30,6 +31,9 @@ public class EmployeesService {
         });
 
         Employee newEmployee = new Employee(payload.username(), payload.name(), payload.surname(), payload.email(), "https://ui-avatars.com/api/?name=" + payload.name() + "+" + payload.surname(), payload.password());
+
+        newEmployee.setRole(Role.USER);
+
         Employee savedEmployee = employeesRepository.save(newEmployee);
         log.info("The employee " + payload.name() + " " + payload.surname() + " has been saved");
 

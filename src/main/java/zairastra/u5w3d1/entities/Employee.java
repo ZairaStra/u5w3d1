@@ -48,7 +48,6 @@ public class Employee implements UserDetails {
         this.email = email;
         this.avatar = "https://ui-avatars.com/api/?name=" + name + "+" + surname;
         this.password = password;
-        this.role = Role.USER;
     }
 
     //per ottenere la lista di Role sotto forma di stringhe(da enum) sfrutto questa implementazione ch eho già pronta
