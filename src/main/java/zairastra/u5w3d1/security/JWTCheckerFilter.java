@@ -5,10 +5,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+import zairastra.u5w3d1.entities.Employee;
 import zairastra.u5w3d1.exceptions.UnauthorizedException;
+import zairastra.u5w3d1.services.EmployeesService;
 import zairastra.u5w3d1.tools.JWTTools;
 
 import java.io.IOException;
@@ -17,6 +22,8 @@ import java.io.IOException;
 public class JWTCheckerFilter extends OncePerRequestFilter {
     @Autowired
     private JWTTools jwtTools;
+    @Autowired
+    private EmployeesService employeesService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -30,6 +37,16 @@ public class JWTCheckerFilter extends OncePerRequestFilter {
         String extractedToken = authHeader.replace("Bearer ", "");
         //lo verifico
         jwtTools.verifyToken(extractedToken);
+
+        //AUTHORIZATION
+        //trovo l'impiegato ricavando id da token
+        String employeeId = jwtTools.extractId(extractedToken);
+        Employee authorizedEmployee = this.employeesService.findEmployeeById(Long.parseLong(employeeId));
+
+        //associo authorizedEmployee al SecurityContext
+        Authentication authentication = new UsernamePasswordAuthenticationToken(authorizedEmployee, null, authorizedEmployee.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         //filtro
         filterChain.doFilter(request, response);
     }

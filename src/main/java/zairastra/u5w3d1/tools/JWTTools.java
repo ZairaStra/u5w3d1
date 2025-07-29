@@ -37,4 +37,9 @@ public class JWTTools {
         }
 
     }
+
+    //estraggo id dal token per usarlo nel filtro
+    public String extractId(String accessToken) {
+        return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parseSignedClaims(accessToken).getPayload().getSubject();
+    }
 }
