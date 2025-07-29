@@ -22,7 +22,7 @@ public class AuthorizationsService {
 
     public String checkEmailBeforeLogin(NewLoginDTO payload) {
         Employee found = employeesService.findByEmail(payload.email()); //ottengo l'impiegato dalla sua mail
-        if (bCrypt.matches(found.getPassword(), payload.password())) { // verifico la psw - che sia uguale a quella del payolad
+        if (bCrypt.matches(payload.password(), found.getPassword())) { // verifico la psw - che sia uguale a quella del payolad
             String extractedToken = jwtTools.createToken(found); //raggiungo il token
             return extractedToken;
         } else {

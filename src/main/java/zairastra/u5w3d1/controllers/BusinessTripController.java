@@ -3,6 +3,7 @@ package zairastra.u5w3d1.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,11 @@ public class BusinessTripController {
     @Autowired
     private BusinessTripsService businessTripsService;
 
+    //solo gli ADMIN possono creare, modificare e salvare i viaggi
     //SAVE
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public NewBusinessTripResponseDTO createBusinessTrip(@RequestBody @Validated NewBusinessTripDTO payload, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             List<String> errors = validationResult.getFieldErrors().stream()
@@ -50,12 +53,14 @@ public class BusinessTripController {
     }
 
     //FINDBYIDANDUPDATE
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{businessTripId}")
     public BusinessTrip getBusinessTripByIdAndUpdate(@PathVariable Long businessTripId, @RequestBody @Validated NewBusinessTripDTO payload) {
         return businessTripsService.findBusinessTripByIdAndUpdate(businessTripId, payload);
     }
 
     //FINDBYIDANDDELETE
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{businessTripId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void getBusinessTripByIdAndDelete(@PathVariable Long businessTripId) {

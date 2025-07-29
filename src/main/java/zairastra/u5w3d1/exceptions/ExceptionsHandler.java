@@ -32,6 +32,7 @@ public class ExceptionsHandler {
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorDTO handleUnauthorized(UnauthorizedException exception) {
+        exception.printStackTrace();
         return new ErrorDTO(exception.getMessage(), LocalDateTime.now());
     }
 
@@ -44,7 +45,8 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(AuthorizationDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN) // 403
-    public ErrorDTO handleForbidden(AuthorizationDeniedException ex) {
+    public ErrorDTO handleForbidden(AuthorizationDeniedException exception) {
+        exception.printStackTrace();
         return new ErrorDTO("Authorization denied", LocalDateTime.now());
     }
 
